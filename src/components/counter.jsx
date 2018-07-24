@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import PropTypes from "prop-types";
 class Counter extends Component {
   styles = {
     // camelCase
@@ -8,22 +8,21 @@ class Counter extends Component {
   };
 
   render() {
+    const { counters, id, onDelete, children, onIncrement, index } = this.props;
+
     return (
       <div>
-        {this.props.children}
+        {children}
         <span style={this.styles} className={this.getBadgeClasses()}>
           {this.formCount()}
         </span>
         <button
-          onClick={() => this.props.onIncrement(this.props.counters)}
+          onClick={() => onIncrement(index)}
           className="btn btn-secondary btn-sm"
         >
           Increment
         </button>
-        <button
-          className="btn btn-danger btn-sm"
-          onClick={() => this.props.onDelete(this.props.id)}
-        >
+        <button className="btn btn-danger btn-sm" onClick={() => onDelete(id)}>
           Delete
         </button>
         {/* {this.state.tags.length === 0 && "There is no tags!"}
@@ -47,9 +46,15 @@ class Counter extends Component {
   }
 
   formCount() {
-    const value = this.props.value;
-    return value === 0 ? "Zero" : value;
+    return this.props.value === 0 ? "Zero" : this.props.value;
   }
 }
 
+Counter.propTypes = {
+  value: PropTypes.number.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onIncrement: PropTypes.func.isRequired,
+  id: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired
+};
 export default Counter;
